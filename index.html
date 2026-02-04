@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Grocery Inventory System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🛒</span>
+                <h1>Smart Grocery Inventory System</h1>
+            </div>
+            <div class="header-stats">
+                <span class="stat-item">Total Items: <strong id="totalItems">0</strong></span>
+                <span class="stat-item">Total Value: <strong id="totalValue">₹0</strong></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <nav class="nav-menu">
+                <button class="nav-item active" data-section="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-section="view-items">
+                    <span class="nav-icon">📋</span>
+                    <span>View All Items</span>
+                </button>
+                <button class="nav-item" data-section="add-item">
+                    <span class="nav-icon">➕</span>
+                    <span>Add Item</span>
+                </button>
+                <button class="nav-item" data-section="search">
+                    <span class="nav-icon">🔍</span>
+                    <span>Search Items</span>
+                </button>
+                <button class="nav-item" data-section="low-stock">
+                    <span class="nav-icon">⚠️</span>
+                    <span>Low Stock Alert</span>
+                </button>
+                <button class="nav-item" data-section="expiry">
+                    <span class="nav-icon">⏰</span>
+                    <span>Near Expiry</span>
+                </button>
+                <button class="nav-item" data-section="billing">
+                    <span class="nav-icon">💳</span>
+                    <span>Generate Bill</span>
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <div class="section-header">
+                    <h2>Dashboard</h2>
+                    <p>Inventory Overview & Analytics</p>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="metric-card total-items">
+                        <div class="metric-icon">📦</div>
+                        <div class="metric-content">
+                            <div class="metric-label">Total Items</div>
+                            <div class="metric-value" id="dashTotalItems">0</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card total-value">
+                        <div class="metric-icon">💰</div>
+                        <div class="metric-content">
+                            <div class="metric-label">Total Value</div>
+                            <div class="metric-value" id="dashTotalValue">₹0</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card low-stock-card">
+                        <div class="metric-icon">⚠️</div>
+                        <div class="metric-content">
+                            <div class="metric-label">Low Stock Items</div>
+                            <div class="metric-value" id="dashLowStock">0</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card expiry-card">
+                        <div class="metric-icon">⏰</div>
+                        <div class="metric-content">
+                            <div class="metric-label">Near Expiry (7 days)</div>
+                            <div class="metric-value" id="dashExpiry">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-section">
+                    <h3>Quick Stats</h3>
+                    <div class="stats-container">
+                        <div class="stat-box">
+                            <label>Total Categories</label>
+                            <span id="totalCategories">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <label>Perishable Items</label>
+                            <span id="perishableCount">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <label>Non-Perishable Items</label>
+                            <span id="nonPerishableCount">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <label>Avg Price (₹)</label>
+                            <span id="avgPrice">0</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View All Items Section -->
+            <section id="view-items" class="section">
+                <div class="section-header">
+                    <h2>All Items</h2>
+                    <p>Complete Inventory Listing</p>
+                </div>
+
+                <div class="filters">
+                    <input type="text" id="filterName" placeholder="Filter by name..." class="filter-input">
+                    <select id="filterCategory" class="filter-input">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+
+                <div class="items-table-wrapper">
+                    <table class="items-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price (₹)</th>
+                                <th>Qty</th>
+                                <th>Status</th>
+                                <th>Expiry</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="itemsTableBody">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Add Item Section -->
+            <section id="add-item" class="section">
+                <div class="section-header">
+                    <h2>Add New Item</h2>
+                    <p>Add a new product to inventory</p>
+                </div>
+
+                <form id="addItemForm" class="form">
+                    <div class="form-group">
+                        <label>Item Type</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="itemType" value="perishable" checked>
+                                <span>Perishable</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="itemType" value="nonperishable">
+                                <span>Non-Perishable</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="itemName">Name *</label>
+                            <input type="text" id="itemName" required placeholder="e.g., Alphonso Mangoes">
+                        </div>
+                        <div class="form-group">
+                            <label for="itemCategory">Category *</label>
+                            <input type="text" id="itemCategory" required placeholder="e.g., Fruits">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="itemPrice">Price (₹) *</label>
+                            <input type="number" id="itemPrice" required min="0" step="0.01" placeholder="180.00">
+                        </div>
+                        <div class="form-group">
+                            <label for="itemQuantity">Quantity *</label>
+                            <input type="number" id="itemQuantity" required min="0" placeholder="15">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="expiryGroup">
+                        <label for="itemExpiry">Expiry Date (YYYY-MM-DD)</label>
+                        <input type="date" id="itemExpiry">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Add Item</button>
+                </form>
+            </section>
+
+            <!-- Search Section -->
+            <section id="search" class="section">
+                <div class="section-header">
+                    <h2>Search Items</h2>
+                    <p>Find items by name or category</p>
+                </div>
+
+                <div class="search-container">
+                    <div class="form-group">
+                        <label for="searchName">Search by Name</label>
+                        <input type="text" id="searchName" placeholder="Enter product name...">
+                    </div>
+                    <button type="button" class="btn btn-primary" id="searchByNameBtn">Search</button>
+                </div>
+
+                <div class="search-container">
+                    <div class="form-group">
+                        <label for="searchCategory">Search by Category</label>
+                        <input type="text" id="searchCategory" placeholder="Enter category...">
+                    </div>
+                    <button type="button" class="btn btn-primary" id="searchByCategoryBtn">Search</button>
+                </div>
+
+                <div id="searchResults"></div>
+            </section>
+
+            <!-- Low Stock Alert Section -->
+            <section id="low-stock" class="section">
+                <div class="section-header">
+                    <h2>Low Stock Alert</h2>
+                    <p>Items with quantity ≤ 5 units</p>
+                </div>
+
+                <div id="lowStockContent"></div>
+            </section>
+
+            <!-- Near Expiry Section -->
+            <section id="expiry" class="section">
+                <div class="section-header">
+                    <h2>Near Expiry Items</h2>
+                    <p>Perishable items expiring soon</p>
+                </div>
+
+                <div class="form-group" style="max-width: 300px;">
+                    <label for="expiryDays">Show items expiring within (days)</label>
+                    <input type="number" id="expiryDays" value="7" min="1">
+                    <button type="button" class="btn btn-primary" id="checkExpiryBtn">Check</button>
+                </div>
+
+                <div id="expiryContent"></div>
+            </section>
+
+            <!-- Billing Section -->
+            <section id="billing" class="section">
+                <div class="section-header">
+                    <h2>Generate Bill</h2>
+                    <p>Create and manage customer bills</p>
+                </div>
+
+                <div class="billing-container">
+                    <div class="billing-left">
+                        <div class="form-group">
+                            <label>Add Items to Cart</label>
+                            <div class="cart-add-form">
+                                <input type="number" id="cartItemId" placeholder="Item ID" min="1">
+                                <input type="number" id="cartQuantity" placeholder="Quantity" min="1">
+                                <button type="button" class="btn btn-success" id="addToCartBtn">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <div class="cart-items">
+                            <h4>Shopping Cart</h4>
+                            <table class="cart-table">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Qty</th>
+                                        <th>Rate (₹)</th>
+                                        <th>Amount (₹)</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cartTableBody">
+                                    <!-- Cart items here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="billing-right">
+                        <div class="bill-summary">
+                            <h4>Bill Summary</h4>
+                            <div class="bill-line">
+                                <span>Subtotal:</span>
+                                <span id="billSubtotal">₹0.00</span>
+                            </div>
+                            <div class="bill-line">
+                                <span>Discount (%):</span>
+                                <div class="discount-input">
+                                    <input type="number" id="discountPercent" value="0" min="0" max="100">
+                                    <span id="discountAmount">₹0.00</span>
+                                </div>
+                            </div>
+                            <div class="bill-line">
+                                <span>GST (%):</span>
+                                <div class="gst-input">
+                                    <input type="number" id="gstPercent" value="5" min="0" max="100">
+                                    <span id="gstAmount">₹0.00</span>
+                                </div>
+                            </div>
+                            <div class="bill-total">
+                                <span>Total:</span>
+                                <span id="billTotal">₹0.00</span>
+                            </div>
+                            <button type="button" class="btn btn-success" id="completePurchaseBtn">Complete Purchase</button>
+                            <button type="button" class="btn btn-neutral" id="clearCartBtn">Clear Cart</button>
+                            <button type="button" class="btn btn-info" id="printBillBtn">Print Bill</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal for Edit Item -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Item</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="editItemForm" class="form">
+                <input type="hidden" id="editItemId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editItemName">Name</label>
+                        <input type="text" id="editItemName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editItemCategory">Category</label>
+                        <input type="text" id="editItemCategory" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editItemPrice">Price (₹)</label>
+                        <input type="number" id="editItemPrice" required min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="editItemQuantity">Quantity</label>
+                        <input type="number" id="editItemQuantity" required min="0">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="button" class="btn btn-neutral modal-close-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Delete Confirmation -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h3>Confirm Delete</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <p id="deleteMessage"></p>
+            <div class="modal-footer">
+                <button class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                <button type="button" class="btn btn-neutral modal-close-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Smart Grocery Inventory System. All rights reserved.</p>
+    </footer>
+
+    <script src="script-api-fixed.js"></script>
+</body>
+</html>
+
+<!--python api_server.py-->
