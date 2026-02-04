@@ -13,6 +13,7 @@ Many times people buy duplicate grocery items because they forget what is alread
 This project solves these problems by providing a smart dashboard that manages inventory, alerts low stock, tracks expiry items, and generates bills automatically.
 
 
+
 **🖥️ Dashboard Overview**
 
 The dashboard provides complete inventory analytics such as:
@@ -26,6 +27,7 @@ Low stock alerts
 Near expiry items
 
 Category and item statistics
+
 
 
 **✨ Features**
@@ -51,6 +53,7 @@ Export bill in PDF format
 Inventory analytics dashboard
 
 
+
 **🏪 Where This System Can Be Used**
 
 Home grocery management
@@ -64,7 +67,9 @@ Local stores stock management
 Billing and purchase tracking
 
 
+
 **🛠️ Technologies Used**
+
 Frontend
 
 HTML
@@ -83,6 +88,7 @@ C++ used for core processing
 
 REST API communication
 
+
         
 **🔄 Working Flow**
 
@@ -95,6 +101,7 @@ Backend processes data using C++ logic.
 System updates inventory dashboard.
 
 Bill can be generated and exported as PDF.
+
 
 
 **🚀 Future Improvements**
@@ -112,6 +119,7 @@ AI-based purchase prediction
 Cloud storage support
 
 
+
 **📚 Learning Outcomes**
 
 From this project, I learned:
@@ -127,6 +135,7 @@ Dashboard UI design
 Bill and PDF generation
 
 Combining C++ logic with backend
+
 
 
 **👩‍💻 Developed By**
